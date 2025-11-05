@@ -1,4 +1,4 @@
-name: Build Example
+name: Complete Example
 
 on:
   push:
@@ -25,6 +25,13 @@ jobs:
       - name: Test the code
         run: npm test
 
+      - name: Test Reporter
+        uses: dorny/test-reporter@v1.9.1
+        with:
+          name: JEST JUnit
+          path: junit.xml
+          reporter: jest-junit
+
       - name: Archive production artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -36,6 +43,3 @@ jobs:
             
       - name: List files
         run: ls -alhR
-
-      - name: Better Test Reports Action
-        uses: mridang/action-test-reporter@v1.3.0
