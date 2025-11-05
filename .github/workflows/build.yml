@@ -21,4 +21,4 @@ jobs:
         with:
           name: app-package
           path: |
-            target/*
+            *
