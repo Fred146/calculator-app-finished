@@ -35,7 +35,7 @@ jobs:
       - name: Better Test Reports Action
         uses: mridang/action-test-reporter@v1.3.0
         with:
-          coverage-file: false
+          upload-coverage-report: false
 
       - name: Archive production artifacts
         uses: actions/upload-artifact@v4
