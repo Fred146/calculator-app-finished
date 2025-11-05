@@ -22,3 +22,5 @@ jobs:
           name: app-package
           path: |
             *
+            /usr/local/lib/node
+            /usr/local/lib/node_modules
