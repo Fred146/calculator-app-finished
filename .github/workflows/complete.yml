@@ -33,3 +33,6 @@ jobs:
             *
             /usr/local/lib/node
             /usr/local/lib/node_modules
+            
+      - name: List files
+        run: ls -alhR
