@@ -1,0 +1,70 @@
+name: Docker CI
+
+on:
+  workflow_dispatch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6-beta
+        with:
+          repository: PXL-2TIN-DevOps-Resources/calculator-app-finished
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v6.0.0
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run the code
+        run: npm run build --if-present
+
+      - name: Test the code
+        run: npm test
+
+      - name: Test Reporter
+        uses: dorny/test-reporter@v1.9.1
+        with:
+          name: JEST JUnit
+          path: junit.xml
+          reporter: jest-junit
+
+      - name: Better Test Reports Action
+        uses: mridang/action-test-reporter@v1.3.0
+        with:
+          coverage-file: junit.xml
+
+      - name: Archive production artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-package
+          path: |
+            *
+            /usr/local/lib/node
+            /usr/local/lib/node_modules
+
+      -
+        name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ vars.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      -
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      -
+        name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          push: true
+          tags: fred20/docker-ci:latest
+
+      - name: Docker Scout
+        uses: docker/scout-action@v1.18.2
+        with:
