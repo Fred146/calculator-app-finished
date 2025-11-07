@@ -63,7 +63,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           push: true
-          tags: fred20/docker-ci:latest,fred20/docker-ci:$GITHUB_REF_NAME
+          tags: fred20/docker-ci:latest,fred20/docker-ci:"$GITHUB_REF_NAME"
 
       - name: Docker Scout
         uses: docker/scout-action@v1.18.2
