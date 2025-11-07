@@ -37,14 +37,14 @@ jobs:
         with:
           coverage-file: junit.xml
 
-      - name: Archive production artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: app-package
-          path: |
-            *
-            /usr/local/lib/node
-            /usr/local/lib/node_modules
+      #- name: Archive production artifacts
+      #  uses: actions/upload-artifact@v4
+      #  with:
+      #    name: app-package
+      #    path: |
+      #      *
+      #      /usr/local/lib/node
+      #      /usr/local/lib/node_modules
 
       -
         name: Login to Docker Hub
@@ -67,3 +67,5 @@ jobs:
 
       - name: Docker Scout
         uses: docker/scout-action@v1.18.2
+        with:
+          command: cves
