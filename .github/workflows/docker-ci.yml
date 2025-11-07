@@ -67,4 +67,3 @@ jobs:
 
       - name: Docker Scout
         uses: docker/scout-action@v1.18.2
-        with:
