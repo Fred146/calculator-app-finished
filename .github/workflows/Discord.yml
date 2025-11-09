@@ -1,0 +1,56 @@
+name: Discord
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6-beta
+        with:
+          repository: PXL-2TIN-DevOps-Resources/calculator-app-finished
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v6.0.0
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run the code
+        run: npm run build --if-present
+
+      - name: Test the code
+        run: npm test
+
+      - name: Test Reporter
+        uses: dorny/test-reporter@v1.9.1
+        with:
+          name: JEST JUnit
+          path: junit.xml
+          reporter: jest-junit
+
+      - name: Better Test Reports Action
+        uses: mridang/action-test-reporter@v1.3.0
+        with:
+          coverage-file: junit.xml
+
+      #- name: Archive production artifacts
+      #  uses: actions/upload-artifact@v4
+      #  with:
+      #    name: app-package
+      #    path: |
+      #      *
+      #      /usr/local/lib/node
+      #      /usr/local/lib/node_modules
+
+      - name: Discord Webhook Action
+        uses: tsickert/discord-webhook@v7.0.0
+        with:
+          webhook-url: ${{ secrets.DISCORD_WEBHOOK }}
+          content: "Test"
