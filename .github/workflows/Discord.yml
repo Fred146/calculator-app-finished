@@ -51,15 +51,11 @@ jobs:
 
       - name: Success message
         if: success()
-        run: echo "Build succes."
-        env:
-          DISCORD_MSG: Build success.
+        run: echo "DISCORD_MSG=Build success." >> $GITHUB_ENV
 
       - name: Failure message
         if: failure()
-        run: echo "Build failed."
-        env:
-          DISCORD_MSG: Build failed.
+        run: echo "DISCORD_MSG=Build failed." >> $GITHUB_ENV
           
       - name: Discord Webhook Action
         uses: tsickert/discord-webhook@v7.0.0
