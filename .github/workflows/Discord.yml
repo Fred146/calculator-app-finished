@@ -4,7 +4,11 @@ on:
   push:
     branches:
       - main
+      - 'feauture/*'
   pull_request:
+      branches:
+      - main
+      - 'feauture/*'
 
 jobs:
   build:
@@ -36,6 +40,7 @@ jobs:
           reporter: jest-junit
 
       - name: Better Test Reports Action
+        id: test-coverage
         uses: mridang/action-test-reporter@v1.3.0
         with:
           coverage-file: junit.xml
@@ -48,17 +53,33 @@ jobs:
       #      *
       #      /usr/local/lib/node
       #      /usr/local/lib/node_modules
-
-      - name: Build successful message
-        if: success()
-        run: echo 'DISCORD_MSG=Build successful.' >> "$GITHUB_ENV"
-
-      - name: Build failure message
-        if: failure()
-        run: echo 'DISCORD_MSG=Build failure.' >> "$GITHUB_ENV"
       
-      - name: Discord Webhook Action
+      - name: Discord Webhook Action - Vraag 1
+        if: failure() || success()
         uses: tsickert/discord-webhook@v7.0.0
         with:
           webhook-url: ${{ secrets.DISCORD_WEBHOOK }}
-          content: ${{ env.DISCORD_MSG }}
+          content: "Build status: ${{ job.status }}"
+
+      - name: Discord Webhook Action - Vraag 2
+        if: github.ref_name == 'main' || startsWith(github.ref_name, 'feature') || github.event_name == 'push' || github.event_name == 'pull_request' || success() || failure()
+        uses: tsickert/discord-webhook@v7.0.0
+        with:
+          webhook-url: ${{ secrets.DISCORD_WEBHOOK }}
+          content: "${{ github.event_name }} | ${{ github.ref_name }} | ${{ job.status }}"
+
+      - name: Create comment - Vraag 3
+        if: github.event_name == 'pull_request'
+        uses: peter-evans/create-or-update-comment@v5
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            Build status: ${{ job.status }}
+            Test coverage: ${{ steps.test-coverage.outputs.result }}
+
+      - name: Discord Webhook Action - Vraag 4
+        if: github.ref_name == 'main' || github.event_name == 'pull_request'
+        uses: tsickert/discord-webhook@v7.0.0
+        with:
+          webhook-url: ${{ secrets.DISCORD_WEBHOOK }}
+          content: "A pull request was opened for the main branch."
