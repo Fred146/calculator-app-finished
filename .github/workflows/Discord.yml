@@ -6,6 +6,9 @@ on:
       - main
   pull_request:
 
+env:
+  DISCORD_MSG: Test
+  
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -51,14 +54,16 @@ jobs:
 
       - name: Success message
         if: success()
-        run: echo "DISCORD_MSG=Build success." >> $GITHUB_ENV
+        env:
+          DISCORD_MSG: Build success.
 
       - name: Failure message
         if: failure()
-        run: echo "DISCORD_MSG=Build failed." >> $GITHUB_ENV
+        env:
+          DISCORD_MSG: Build failure.
           
       - name: Discord Webhook Action
         uses: tsickert/discord-webhook@v7.0.0
         with:
           webhook-url: ${{ secrets.DISCORD_WEBHOOK }}
-          content: "$DISCORD_MSG"
+          content: $DISCORD_MSG
