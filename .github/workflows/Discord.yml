@@ -49,16 +49,18 @@ jobs:
       #      /usr/local/lib/node
       #      /usr/local/lib/node_modules
 
-      - name: Discord Webhook Action - Success message
+      - name: Success message
         if: success()
-        uses: tsickert/discord-webhook@v7.0.0
-        with:
-          webhook-url: ${{ secrets.DISCORD_WEBHOOK }}
-          content: "Build succeeded."
+        env:
+          DISCORD_MSG: Build success.
 
-      - name: Discord Webhook Action - Failure message
+      - name: Failure message
         if: failure()
+        env:
+          DISCORD_MSG: Build failed.
+          
+      - name: Discord Webhook Action
         uses: tsickert/discord-webhook@v7.0.0
         with:
           webhook-url: ${{ secrets.DISCORD_WEBHOOK }}
-          content: "Build failed."
+          content: $DISCORD_MSG
