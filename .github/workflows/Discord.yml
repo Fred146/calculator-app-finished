@@ -51,11 +51,13 @@ jobs:
 
       - name: Success message
         if: success()
+        run: echo "Build succes."
         env:
           DISCORD_MSG: Build success.
 
       - name: Failure message
         if: failure()
+        run: echo "Build failed."
         env:
           DISCORD_MSG: Build failed.
           
