@@ -65,4 +65,4 @@ jobs:
         uses: tsickert/discord-webhook@v7.0.0
         with:
           webhook-url: ${{ secrets.DISCORD_WEBHOOK }}
-          content: $DISCORD_MSG
+          content: "$DISCORD_MSG"
