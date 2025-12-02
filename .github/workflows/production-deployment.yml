@@ -12,7 +12,7 @@ jobs:
         with:
           host: ${{ secrets.PROD_IP }}
           username: ${{ secrets.USERNAME }}
-          password: ${{ secrets.PASSWORD }}
+          key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.PORT }}
           script: |
             docker pull fred20/docker-complete:latest
