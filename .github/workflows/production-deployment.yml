@@ -17,4 +17,4 @@ jobs:
           script: |
             docker pull fred20/docker-complete:latest
             docker ps -aq | xargs -r docker rm
-            docker run -d -p 3000:3000 fred20/docker-complete:latest
+            docker run -d -p 3000:80 fred20/docker-complete:latest
