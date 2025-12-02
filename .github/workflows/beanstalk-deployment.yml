@@ -22,6 +22,5 @@ jobs:
         aws_session_token: ${{ secrets.AWS_SESSION_TOKEN }}
         application_name: CalculatorApp
         environment_name: CalculatorApp-Environment
-        version_label: 1
         region: us-east-1
         deployment_package: deploy.zip
