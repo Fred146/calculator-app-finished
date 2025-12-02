@@ -9,5 +9,6 @@ jobs:
 
     steps:
       - run: docker pull fred20/docker-complete:latest
+      - run: docker ps -aq | xargs -r docker stop
       - run: docker ps -aq | xargs -r docker rm
       - run: docker run -d -p 3000:3000 fred20/docker-complete:latest
