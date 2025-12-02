@@ -1,0 +1,13 @@
+name: Test Deployment
+
+on:
+    workflow_dispatch:
+
+jobs:
+  test-deployment:
+    runs-on: self-hosted
+
+    steps:
+      - run: docker pull fred20/docker-complete:latest
+      - run: docker rm -f $(docker ps -aq)
+      - run: docker run -d -p 3000:3000 fred20/docker-complete:latest
