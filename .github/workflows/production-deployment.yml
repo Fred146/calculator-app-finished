@@ -1,0 +1,20 @@
+name: Production Deployment
+
+on:
+    workflow_dispatch:
+
+jobs:
+  production-deployment:
+    runs-on: self-hosted
+
+    steps:
+      - uses: appleboy/ssh-action@v1.2.4
+        with:
+          host: ${{ secrets.PROD_IP }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          port: ${{ secrets.PORT }}
+          script: |
+            docker pull fred20/docker-complete:latest
+            docker ps -aq | xargs -r docker rm
+            docker run -d -p 3000:3000 fred20/docker-complete:latest
